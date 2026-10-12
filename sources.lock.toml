@@ -1,0 +1,15 @@
+# ARK-OS Source Dependencies Lockfile
+# All sources must be pinned to immutable releases with cryptographic checksums.
+#
+# Checksum verification source:
+# https://www.kernel.org/pub/linux/kernel/v6.x/sha256sums.asc
+# Entry: 9eb33173b0e04e898d431587c78c47ee6e19e3fdf2ea007323de82af14bb2a4f  linux-6.6.158.tar.xz
+
+[sources.linux]
+version = "6.6.158"
+url = "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.6.158.tar.xz"
+sha256 = "9eb33173b0e04e898d431587c78c47ee6e19e3fdf2ea007323de82af14bb2a4f"
+archive_format = "tar.xz"
+upstream_type = "longterm"
+source_provider = "kernel.org"
+verified_date = "2026-10-12"

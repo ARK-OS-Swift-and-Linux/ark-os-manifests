@@ -1,0 +1,60 @@
+# ARK-OS Target Manifest: x86_64 (QEMU Virtual Platform)
+# Baseline specification for minimal system bring-up.
+
+[target]
+architecture = "x86_64"
+platform = "qemu-q35"
+triple = "x86_64-unknown-linux-gnu"
+status = "initial-bringup"
+
+[kernel]
+source = "sources.linux"
+config_file = "manifests/targets/x86_64.defconfig"
+# Configuration format: minimal defconfig baseline.
+# This file specifies non-default options required for early bring-up.
+# It is designed to be expanded by the kernel Kconfig system (e.g. via
+# KCONFIG_ALLCONFIG or merge_config.sh) rather than being a full standalone .config.
+config_type = "defconfig-minimal"
+artifact = "arch/x86/boot/bzImage"
+format = "bzImage"
+
+[initramfs]
+format = "cpio.gz"
+compression = "gzip"
+# rdinit specifies the initial userspace program executed from the initramfs
+init_path = "/sbin/arkrt"
+
+[toolchain]
+# Verified host toolchain specifications
+swift_version = "6.4"
+swift_target_triple = "x86_64-unknown-linux-gnu"
+c_compiler = "gcc"
+c_compiler_version = "16.2.1"
+c_runtime = "glibc"
+glibc_version = "2.44"
+dynamic_linker = "/lib64/ld-linux-x86-64.so.2"
+
+# Swift runtime linking strategy status: UNRESOLVED
+# The host toolchain does NOT have the official Swift Static Linux SDK
+# (static-linux-musl) installed. Using `swift build --static-swift-stdlib` embeds
+# the Swift standard library, but leaves C runtime dependencies (libc.so.6,
+# libm.so.6, libgcc_s.so.1, ld-linux-x86-64.so.2) dynamically linked.
+#
+# Remaining resolution options before arkrt build:
+# Option 1 (Dynamic C runtime): Build with --static-swift-stdlib and copy the host
+# dynamic linker (/lib64/ld-linux-x86-64.so.2) and glibc shared objects into initramfs.
+# Option 2 (Static musl runtime): Install the official Swift Static Linux SDK
+# on the build host to produce a standalone static ELF binary.
+swift_linking_strategy = "unresolved"
+swift_static_sdk_installed = false
+
+[emulator]
+binary = "qemu-system-x86_64"
+machine = "q35"
+accel = "kvm:tcg"
+memory_mb = 1024
+serial = "stdio"
+display = "none"
+# Initial boot parameters: rdinit sets PID 1 in initramfs; earlyprintk ensures
+# early boot messages are streamed to serial console prior to full driver setup.
+cmdline = "console=ttyS0 earlyprintk=serial,ttyS0 rdinit=/sbin/arkrt panic=-1"

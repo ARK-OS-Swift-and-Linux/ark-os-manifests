@@ -1,0 +1,22 @@
+# ARK-OS Component Manifest: Initial Bring-Up Set
+# Defines components participating in the minimal RAM-only QEMU bring-up milestone.
+
+[components.linux]
+type = "kernel"
+source = "sources.linux"
+target_config = "manifests/targets/x86_64.defconfig"
+description = "Upstream Linux kernel built with minimal in-tree target defconfig"
+
+[components.boot]
+type = "boot"
+path = "components/boot"
+description = "Kernel configuration and initramfs archive assembly specifications"
+
+[components.arkrt]
+type = "runtime"
+path = "components/runtime/arkrt"
+language = "swift"
+binary_name = "arkrt"
+install_path = "/sbin/arkrt"
+role = "PID 1 userspace runtime"
+description = "Initial userspace init process responsible for virtual mounts and system handoff"

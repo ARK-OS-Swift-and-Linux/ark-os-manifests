@@ -1,0 +1,47 @@
+# ARK-OS Minimal Linux Kernel Configuration (x86_64 QEMU Virtual Target)
+#
+# CONFIGURATION PROCESS:
+# This file is a minimal defconfig baseline, not a full standalone .config.
+# It specifies the explicit non-default configuration symbols required for the
+# RAM-only QEMU bring-up milestone. It is intended to be expanded into a complete
+# .config during build orchestration using Linux Kconfig tooling (e.g.,
+# `make ARCH=x86_64 KCONFIG_ALLCONFIG=x86_64.defconfig allnoconfig` or
+# `make ARCH=x86_64 defconfig` with symbol merge).
+
+# Target Architecture Support
+CONFIG_64BIT=y
+CONFIG_X86_64=y
+CONFIG_SMP=y
+CONFIG_NO_HZ_IDLE=y
+CONFIG_HIGH_RES_TIMERS=y
+
+# Binary Executable Formats
+CONFIG_BINFMT_ELF=y
+CONFIG_BINFMT_SCRIPT=y
+
+# Initial Ramdisk (Initramfs) Support
+CONFIG_BLK_DEV_INITRD=y
+CONFIG_RD_GZIP=y
+
+# TTY and Serial Console Subsystem
+CONFIG_TTY=y
+CONFIG_SERIAL_8250=y
+CONFIG_SERIAL_8250_CONSOLE=y
+CONFIG_EARLY_PRINTK=y
+CONFIG_PRINTK=y
+CONFIG_PRINTK_TIME=y
+
+# Virtual Filesystems for Userspace Runtime
+CONFIG_DEVTMPFS=y
+CONFIG_DEVTMPFS_MOUNT=y
+CONFIG_PROC_FS=y
+CONFIG_SYSFS=y
+CONFIG_TMPFS=y
+
+# Virtualized Bus and Virtio Devices (QEMU)
+CONFIG_PCI=y
+CONFIG_VIRTIO=y
+CONFIG_VIRTIO_PCI=y
+CONFIG_VIRTIO_CONSOLE=y
+CONFIG_VIRTIO_BLK=y
+CONFIG_VIRTIO_NET=y
